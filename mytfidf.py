@@ -3,32 +3,38 @@ from collections import Counter
 import nltk
 import math
 import string
+import jieba
 
 from nltk import PorterStemmer
 from nltk.corpus import stopwords
 
+import fileRW
 
-text1 = "TF-IDF（Term Frequency & Inverse Documentation Frequency 词频-逆文档）算法是当前非常常用的一种文本特征的提取方法，在文本信息检索，语意抽取等自然语言处理（NLP）中广泛应用。本文将简单的介绍一下基于英文文本的TF-IDF算法实现，并且利用现在比较流行的词云的方式直观的表现出一个结果。"
+texts = []
+stopwords_list = []
+stopwords_list = fileRW.file_reader("cn_stopwords.txt")
 
-text2 = "The Georgetown experiment in 1954 involved fully automatic translation of more than sixty Russian sentences into English. The authors claimed that within three or five years, machine translation would be a solved problem.[2] However, real progress was much slower, and after the ALPAC report in 1966, which found that ten-year-long research had failed to fulfill the expectations, funding for machine translation was dramatically reduced. Little further research in machine translation was conducted until the late 1980s, when the first statistical machine translation systems were developed."
 
-text3 = "During the 1970s, many programmers began to write conceptual ontologies, which structured real-world information into computer-understandable data. Examples are MARGIE (Schank, 1975), SAM (Cullingford, 1978), PAM (Wilensky, 1978), TaleSpin (Meehan, 1976), QUALM (Lehnert, 1977), Politics (Carbonell, 1979), and Plot Units (Lehnert 1981). During this time, many chatterbots were written including PARRY, Racter, and Jabberwacky。"
-
+text1 = u"草种业是草原生态修复与草业的“芯片”，是国家战略性、基础性核心产业。作为草原大国，我国草原面积近40" \
+        u"亿亩，草种业健康发展是改善我国生态的基础保障，是推动我国草原与草业事业跨越式发展的重要引擎。从我国的粮食安全现状看，现阶段的粮食安全，事实上主要是饲料粮的安全、蛋白质供应的安全，而这些主要来源于草原，草原健康直接关乎优质安全食物的供给保障能力。 "
+text2 = u"会议强调，草原是我国生态文明建设主战场，草原工作“重”在保护，“要”在修复，“核心”是质量，基础是草种，要把草种的种源安全提升到关系国家安全的战略高度，集中力量破难题、补短板、强优势、控风险，实现草种业种源自主可控、产业自立自强。 "
+text3 = u"为保障我国草原生态建设和草业高质量发展重大科技需求提供强有力支撑，2019" \
+        u"年，中国林科院在国家林草局的指导下，整合全院相关优势学科和团队资源，成立了国家林草局草原研究中心，组建了草地资源与利用、草原保护与生态修复、草原监测与评估、草原生态系统管理等研究团队。并与兰州大学、中国农业大学、中科院等国家知名高校及科研院所建立了不同形式的全面合作，草种质创新与育种团队和草原保护修复团队快速发展壮大，建立了覆盖全国不同气候区的草种质资源圃、育制种基地和生态适应性测试基地，育成的品种也同步转化，并在我国北方各类困难立地广泛应用，初步形成了“产学研用”全面发展新局面。 "
 
 def get_tokens(text):
-    lower = text.lower()  #将字符转换成小写
-    remove_punctuation_map = dict((ord(char), None) for char in string.punctuation) #除去标点
-    no_punctuation = lower.translate(remove_punctuation_map)
-    tokens = nltk.word_tokenize(no_punctuation)
-
-    return tokens
+    #语料切片 + 清洗
+    ret = []
+    cut = jieba.cut_for_search(text)
+    for i in cut:
+        if i not in stopwords_list:
+            ret.append(i)
+    return ret
 
 
 def stem_tokens(tokens, stemmer):
     stemmed = []
     for item in tokens:
         stemmed.append(stemmer.stem(item))
-
     return stemmed
 
 
@@ -45,10 +51,7 @@ def tfidf(word, count, count_list):
 
 def count_term(text):
     tokens = get_tokens(text)
-    filtered = [w for w in tokens if not w in stopwords.words('english')]
-    stemmer = PorterStemmer()
-    stemmed = stem_tokens(filtered, stemmer)
-    count = Counter(stemmed)
+    count = Counter(tokens)
     return count
 
 
@@ -65,5 +68,4 @@ def main():
             print("\tWord: {}, TF-IDF: {}".format(word, round(score, 5)))
 
 if __name__ == "__main__":
-
     main()
