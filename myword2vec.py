@@ -19,7 +19,7 @@ def cut_words(file="种草文章.txt"):
     result = []
     all_data = pd.read_csv(file,encoding = "utf-8",names=["data"])["data"]
     for words in all_data:
-        c_words = jieba.lcut(words)
+        c_words = jieba.cut_for_search(words)
         result.append([word for word in c_words if word not in stop_words])
     return result
 
@@ -89,7 +89,7 @@ if __name__ == "__main__":
                     w2 -= lr * delta_w2
 
     with open("grass.pkl","wb") as f:
-        pickle.dump([w1,word_2_index,index_2_word],f)  # word2vec 负采样
+        pickle.dump([w1,word_2_index,index_2_word,w2],f)  # word2vec 负采样
 
 
 
