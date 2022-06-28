@@ -9,9 +9,9 @@ from nltk import PorterStemmer
 from nltk.corpus import stopwords
 
 import fileRW
+import file_getter
 
-texts = []
-stopwords_list = []
+texts = []  #todo:修改文档读取路径
 stopwords_list = fileRW.file_reader("cn_stopwords.txt")
 
 
@@ -40,13 +40,18 @@ def stem_tokens(tokens, stemmer):
 
 def tf(word, count):
     return count[word] / sum(count.values())
+
+
 def n_containing(word, count_list):
     return sum(1 for count in count_list if word in count)
+
+
 def idf(word, count_list):
     return math.log(len(count_list)) / (1 + n_containing(word, count_list))
+
+
 def tfidf(word, count, count_list):
     return tf(word, count) * idf(word, count_list)
-
 
 
 def count_term(text):
@@ -56,7 +61,7 @@ def count_term(text):
 
 
 def main():
-    texts = [text1, text2, text3]
+    texts = [file_getter.getfile("种草文章.txt")]
     countlist = []
     for text in texts:
         countlist.append(count_term(text))
@@ -66,6 +71,9 @@ def main():
         sorted_words = sorted(scores.items(), key = lambda x: x[1], reverse=True)
         for word, score in sorted_words[:5]:
             print("\tWord: {}, TF-IDF: {}".format(word, round(score, 5)))
+
+    #bug:只有一篇text时会无法正常得到TFIDF
+
 
 if __name__ == "__main__":
     main()
