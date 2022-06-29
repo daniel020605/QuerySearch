@@ -18,7 +18,7 @@ h2{
     margin: auto;
     position: absolute;
 }
-.sourceinput{
+.filebutton{
     display: block;
     margin: auto;
     left: 0;
@@ -27,8 +27,17 @@ h2{
     border-color:white;
     font-size: 15px;
 }
+.empty{
+    position: absolute;
+    display: block;
+    height: 200px;
+    width: auto;
+    left: auto;
+    right:auto;
 
-.button2{
+}
+
+.upload{
     
     border-radius: 20px;
     border-width: 5px;
@@ -48,7 +57,7 @@ h2{
     margin: auto;
 }
 .querybox{
-    
+
     font-size: 25px;
     border-width: 5px;
     border-radius: 20px;
@@ -60,9 +69,17 @@ h2{
     border-color:white;
     font-size: 25px;
     background-image: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
+}
+button{
+    border-radius: 20px;
+    border-width: 5px;
+    border-color:white;
+    font-size: 25px;
+    background-image: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
     
 }
 button:hover{
     background-image: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
     color: white;
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17p bx 50px 0 rgba(0,0,0,0.19);
 }

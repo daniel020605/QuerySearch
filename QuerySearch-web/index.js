@@ -27,7 +27,9 @@
 //     console.log("http://127.0.0.1:5500/", host, port)
 // })}
 //点击普通按钮
-		function openFileDialog()
+
+
+function openFileDialog()
 		{
 			//模拟鼠标点击事件
 			$(".filebutton").click();
@@ -45,7 +47,7 @@
 		// 开始上传, 参数为 File 对象
 		function startUpload( file )
 		{
-			var uploadUrl = "http://127.0.0.1:5500/";
+			var uploadUrl = "http://127.0.0.1:8080/";
 
 			// 手工构造一个 form 对象
 			var formData = new FormData();
@@ -67,27 +69,52 @@
 		    if (evt.lengthComputable)
 		    {
 		    	var progress = Math.round(evt.loaded * 100 / evt.total);
-		    	Af.log ("上传进度: " + progress);
+		    	console.log ("上传进度: " + progress);
 		    }
 		};
 		window.evt_upload_complete = function (evt)
 		{
 			if(evt.loaded == 0)
 			{
-				Af.log ("上传失败!");
+				console.log ("上传失败!");
 			}
 			else
 			{
-				Af.log ("上传完成!");
+				console.log("上传完成!");
 		    	var response = JSON.parse(evt.target.responseText);
-		   		Af.log (response);
+		   		console.log (response);
 			}
 		};
 		window.evt_upload_failed = function (evt)
 		{
-			Af.log  ("上传出错");
+			console.log  ("上传出错");
 		};
 		window.evt_upload_cancel = function (evt)
 		{
-			Af.log( "上传中止!");
+			console.log( "上传中止!");
 		};
+
+
+		
+	function submitForm(){
+				// 得到文本框的值
+				var query = document.getElementById("query").value;
+				//判断是否为空
+				if( isEmpty(query) ){ //为空
+					// 设置提示信息(设置span元素的值)
+					document.getElementById("msg").innerHTML = "*Query不能为空!";
+
+					// 阻止表单提交
+					return;
+				}
+
+				// 手动提交表单
+				document.getElementById("queryform").submit();
+			}
+	function isEmpty(str){
+				// 判断是否为空
+				if(str == null || str.trim() == "") {
+					return true;
+				}
+				return false;
+			}
