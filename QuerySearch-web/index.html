@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" type = "text/css" href = "index.css">    <meta charset="UTF-8">
+    <link rel="stylesheet" type = "text/css" href = "index.css">
+    <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="index.js" type="text/javascript"></script>
@@ -13,14 +14,14 @@
     <h1>QuerySearch!欢迎来到指令召回系统!</h1>
     <h2>请先添加您要使用的数据源再直接进行答案召回</h2>
     <div class="source">
-        <form action="content.html" method="post" enctype="multipart/form-data" name="avatar"></form>
+        <form action="answers.html" method="post" enctype="multipart/form-data" name="avatar"></form>
             <label for="avatar">添加数据源:</label>
             <input class="filebutton" type="file" id="avatar" name="avatar" onchange="fileSelected()">
             <button class="upload" type="submit" onclick="openFileDialog()">Submit</button>
         </form>
     </div>
     <div class="inputbox">
-    <form action="content.html" method="post" name="query">
+    <form action="answers.html" method="post" name="query">
         <br>
         <label>
             <input class="querybox" type="text" name="query" placeholder="在此输入您的Query">
