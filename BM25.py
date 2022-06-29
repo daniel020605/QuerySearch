@@ -112,28 +112,23 @@ doc_vectors = [dictionary.doc2bow(text) for text in corpus]
 
 vec1 = doc_vectors[0]
 vec1_sorted = sorted(vec1, key=lambda x: x[1], reverse=True)
-print (len(vec1_sorted))
-for term, freq in vec1_sorted[:5]:
-    print (dictionary[term])
+
 
 bm25Model = bm25.BM25(corpus)
 average_idf = sum(map(lambda k: float(
     bm25Model.idf[k]), bm25Model.idf.keys())) / len(bm25Model.idf.keys())
 query_str = input('请输入query:')
+if re.match(r'[\u4e00-\u9fa5]*' , query_str):
+    query = []
+    for word in query_str.split(' '):
+        query.append(word)
 
-query = []
-for word in query_str.split(' '):
-    query.append(word)
-print(query)
-scores = bm25Model.get_scores(query)
+    scores = bm25Model.get_scores(query)
 # scores.sort(reverse=True)
 
-print (scores)
-idx = scores.index(max(scores))
-print (idx)
-fname = filenames[idx]
-fname = fname.split('.')[0]
-print (fname)
-
-
-
+    print (scores)
+    idx = scores.index(max(scores))
+    print (idx)
+    fname = filenames[idx]
+    fname = fname.split('.')[0]
+    print (fname)
