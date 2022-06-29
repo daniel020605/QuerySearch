@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" type = "text/css" href = "index.css">    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuerySearch!指令召回系统</title>
+</head>
+<body>
+    <h1>QuerySearch!欢迎来到指令召回系统!</h1>
+    <h2>请先添加您要使用的数据源或直接进行答案召回</h2>
+    <div class="source">
+        <form action="/file_upload" method="post" enctype="multipart/form-data"></form>
+        <label for="avatar">添加数据源:</label>
+        <input class="sourceinput" type="file"id="avatar" name="avatar"
+        accept="text/*" multiple = "true">
+        <button class="button2" type="submit">Submit</button>
+        </form>
+    </div>
+    
+    <div class="inputbox">
+        <input class="querybox" placeholder="请输入Query">
+        <button class="button1" >Search</button>
+    </div>
+    
+    
+</body>
+</html>

@@ -23,6 +23,6 @@ def voc_sim(word, top_n):
         print(word, sim)
 
 if __name__ == '__main__':
-    voc_sim('哈尔滨',20)
+    voc_sim('黑龙江',20)
 
 
