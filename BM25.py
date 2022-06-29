@@ -112,9 +112,9 @@ doc_vectors = [dictionary.doc2bow(text) for text in corpus]
 
 vec1 = doc_vectors[0]
 vec1_sorted = sorted(vec1, key=lambda x: x[1], reverse=True)
-print (len(vec1_sorted))
-for term, freq in vec1_sorted[:5]:
-    print (dictionary[term])
+# print (len(vec1_sorted))
+# for term, freq in vec1_sorted[:5]:
+#     print (dictionary[term])
 
 bm25Model = bm25.BM25(corpus)
 average_idf = sum(map(lambda k: float(
