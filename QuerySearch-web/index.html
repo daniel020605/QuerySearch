@@ -12,9 +12,9 @@
     <div class="source">
         <form action="/file_upload" method="post" enctype="multipart/form-data"></form>
         <label for="avatar">添加数据源:</label>
-        <input class="sourceinput" type="file"id="avatar" name="avatar"
+        <input class="sourceinput" type="file" id="avatar" name="avatar" onchange="fileSelected()"
         accept="text/*" multiple = "true">
-        <button class="button2" type="submit">Submit</button>
+        <button class="button2" type="submit" onclick="openFileDialog()">Submit</button>
         </form>
     </div>
     
