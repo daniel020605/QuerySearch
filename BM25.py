@@ -123,7 +123,7 @@ def tokenization(filename):
         if flag not in stop_flag and word not in stopwords:
             result.append(word)
     return result
-corpus = [];
+corpus = []
 dirname = 'corpus'
 filenames = []
 for root,dirs,files in os.walk(dirname):
@@ -138,21 +138,40 @@ doc_vectors = [dictionary.doc2bow(text) for text in corpus]
 
 vec1 = doc_vectors[0]
 vec1_sorted = sorted(vec1, key=lambda x: x[1], reverse=True)
+
 # print (len(vec1_sorted))
 # for term, freq in vec1_sorted[:5]:
 #     print (dictionary[term])
 
-bm25Model = bm25.BM25(corpus)
+
+
+bm25Model = BM25(corpus)
 average_idf = sum(map(lambda k: float(
     bm25Model.idf[k]), bm25Model.idf.keys())) / len(bm25Model.idf.keys())
 query_str = input('请输入query:')
+import synonyms
 
-query = []
-for word in query_str.split(' '):
-    query.append(word)
-print(query)
-scores = bm25Model.get_scores(query)
+query_synonyms = synonyms.nearby(query_str)
+# print(synonyms.nearby(query_str))
+query_Synonyms = []
+if re.match(r'[\u4e00-\u9fa5]*' , query_str):
+    query = []
+    for word in query_str.split(' '):
+        query.append(word)
+    scores_list = []
+    for i in query:
+        for j in range(0,5):
+            query_Synonyms.append(synonyms.nearby(i)[0][j])
+    scores = bm25Model.get_scores(query_Synonyms,average_idf=average_idf)
+    # scores = bm25Model.get_scores(query)
 # scores.sort(reverse=True)
+    print(scores)
+    idx = scores.index(max(scores))
+
+
+    fname = filenames[idx]
+    fname = fname.split('.')[0]
+    print ("您可能想看的是:"+fname)
 
 
 if sum(scores) == 0:

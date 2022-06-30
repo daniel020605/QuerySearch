@@ -1,8 +1,17 @@
+
+
+
+
 def file_reader(filename):
     with open(filename, "r+", encoding="UTF-8") as fReader:
         lines = fReader.read()
         context = lines.split('\n')
         return context
+
+
+
+
+
 
 
 def file_writer(filename, input_str):
@@ -17,7 +26,8 @@ def main():
     print(context)
 
 
-
 if __name__ == "__main__":
     main()
+
+
 
