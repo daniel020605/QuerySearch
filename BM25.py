@@ -3,6 +3,7 @@
 #
 # Licensed under the GNU LGPL v2.1 - http://www.gnu.org/licenses/lgpl.html
 
+
 import jieba.posseg as pseg
 import re
 import os
@@ -12,13 +13,15 @@ import codecs
 import math
 from six import iteritems
 from six.moves import xrange
+import xmnlp
+import Pinyin2Hanzi
 
 
 # BM25 parameters.
 PARAM_K1 = 1.5
 PARAM_B = 0.75
 EPSILON = 0.25
-
+xmnlp.set_model('xmnlp-onnx-models')
 
 class BM25(object):
 
@@ -68,6 +71,19 @@ class BM25(object):
         return scores
 
 
+def pinyin_2_hanzi(pinyinList):
+    from Pinyin2Hanzi import DefaultDagParams
+    from Pinyin2Hanzi import dag
+
+    dagParams = DefaultDagParams()
+    # path_num：候选值，可设置一个或多个
+    result = dag(dagParams, pinyinList, path_num=10, log=True)
+    for item in result:
+        # socre = item.score # 得分
+        res = item.path # 转换结果
+        return res
+
+
 def get_bm25_weights(corpus):
     bm25 = BM25(corpus)
     average_idf = sum(
@@ -87,6 +103,16 @@ stopwords = codecs.open(
 stopwords = [w.strip() for w in stopwords]
 stop_flag = ['x', 'c', 'u', 'd', 'p', 't', 'uj', 'm', 'f', 'r']
 
+
+# def unshell(string):
+#
+def check(str):
+  my_re = re.compile(r'[A-Za-z]',re.S)
+  res = re.findall(my_re,str)
+  if len(res):
+      return True
+  else:
+      return False
 
 def tokenization(filename):
     result = []
@@ -127,6 +153,27 @@ for word in query_str.split(' '):
 print(query)
 scores = bm25Model.get_scores(query)
 # scores.sort(reverse=True)
+
+
+if sum(scores) == 0:
+    if check(query_str):
+        piny = xmnlp.pinyin(query_str)
+        hanzilsit = pinyin_2_hanzi(piny)
+        query_str = hanzilsit[0]
+        query = []
+        for word in query_str.split(' '):
+            query.append(word)
+
+    else:
+        wrong_word = xmnlp.checker(query_str)
+        index = wrong_word.keys().__str__()[9:].lstrip("(").rstrip(")").lstrip("[").rstrip("]").lstrip("(").rstrip(")").split(",")
+        index[1] = list(index[1])[2]
+        substitute = wrong_word.values().__str__()[11:]
+        query_str = query_str.replace(index[1], substitute[5])
+    print("您可能想找的是:"+query_str)
+    for word in query_str.split(' '):
+        query.append(word)
+    scores = bm25Model.get_scores(query)
 
 print (scores)
 idx = scores.index(max(scores))
