@@ -61,7 +61,7 @@ def count_term(text):
 
 
 def main():
-    texts = [file_getter.getfile("种草文章.txt")]
+    texts = [file_getter.getfile("哈尔滨.txt")]
     countlist = []
     for text in texts:
         countlist.append(count_term(text))

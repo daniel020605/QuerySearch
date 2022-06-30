@@ -14,7 +14,7 @@ def load_stop_words(file = "cn_stopwords.txt"):
         return f.read().split("\n")
 
 
-def cut_words(file="种草文章.txt"):
+def cut_words(file="哈尔滨.txt"):
     stop_words = load_stop_words()
     result = []
     all_data = pd.read_csv(file,encoding = "utf-8",names=["data"])["data"]

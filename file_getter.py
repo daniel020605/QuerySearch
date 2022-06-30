@@ -11,5 +11,5 @@ def getfile(filename):
         return ret
 
 if __name__ == '__main__':
-    f1 = getfile("种草文章.txt")
+    f1 = getfile("哈尔滨.txt")
     print(f1)
