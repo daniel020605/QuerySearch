@@ -97,7 +97,7 @@ def tokenization(filename):
         if flag not in stop_flag and word not in stopwords:
             result.append(word)
     return result
-corpus = [];
+corpus = []
 dirname = 'corpus'
 filenames = []
 for root,dirs,files in os.walk(dirname):
@@ -118,17 +118,21 @@ bm25Model = bm25.BM25(corpus)
 average_idf = sum(map(lambda k: float(
     bm25Model.idf[k]), bm25Model.idf.keys())) / len(bm25Model.idf.keys())
 query_str = input('请输入query:')
+import synonyms
+query_synonyms = synonyms.nearby(query_str)
+# print(synonyms.nearby(query_str))
+print(query_synonyms[0])
 if re.match(r'[\u4e00-\u9fa5]*' , query_str):
     query = []
     for word in query_str.split(' '):
         query.append(word)
-
-    scores = bm25Model.get_scores(query)
+    scores_list = []
+    scores = bm25Model.get_scores(query_synonyms[0][0:5])
+    # scores = bm25Model.get_scores(query)
 # scores.sort(reverse=True)
-
-    print (scores)
+    print(scores)
     idx = scores.index(max(scores))
-    print (idx)
+
     fname = filenames[idx]
     fname = fname.split('.')[0]
-    print (fname)
+    print ("您可能想看的是:"+fname)
