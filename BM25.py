@@ -114,20 +114,24 @@ vec1 = doc_vectors[0]
 vec1_sorted = sorted(vec1, key=lambda x: x[1], reverse=True)
 
 
-bm25Model = bm25.BM25(corpus)
+bm25Model = BM25(corpus)
 average_idf = sum(map(lambda k: float(
     bm25Model.idf[k]), bm25Model.idf.keys())) / len(bm25Model.idf.keys())
 query_str = input('请输入query:')
 import synonyms
+
 query_synonyms = synonyms.nearby(query_str)
 # print(synonyms.nearby(query_str))
-print(query_synonyms[0])
+query_Synonyms = []
 if re.match(r'[\u4e00-\u9fa5]*' , query_str):
     query = []
     for word in query_str.split(' '):
         query.append(word)
     scores_list = []
-    scores = bm25Model.get_scores(query_synonyms[0][0:5])
+    for i in query:
+        for j in range(0,5):
+            query_Synonyms.append(synonyms.nearby(i)[0][j])
+    scores = bm25Model.get_scores(query_Synonyms,average_idf=average_idf)
     # scores = bm25Model.get_scores(query)
 # scores.sort(reverse=True)
     print(scores)
